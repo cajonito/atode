@@ -11,7 +11,7 @@ var main = () => {
 
 var getTestData = () => {
   const fs = require('fs');
-  let contents = fs.readFileSync('./tests/data/test.json');
+  let contents = fs.readFileSync('./tests/data/mention.json');
 
   return {
     parameter: {},
