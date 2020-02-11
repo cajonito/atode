@@ -23,6 +23,26 @@ var getParameter = (contents: any) => {
   };
 }
 
+var createSlackPostFromBlockElements = (elements: any[]): SlackPost => {
+  const text = "test";
+  const defaultBlocks: any = [
+    {
+      "type": "rich_text",
+      "block_id": "DUMMY",
+      "elements": [
+        {
+          "type": "rich_text_section",
+        }
+      ]
+    }
+  ];
+  let targetBlocks: any = defaultBlocks;
+  targetBlocks[0]["elements"][0]["elements"] = elements;
+  const contents = getContents(text, targetBlocks);
+  const parameter = getParameter(contents);
+  return new SlackPost(parameter);
+}
+
 test("isBotPost", () => {
   const text = "test";
   const contents = getContents(text);
@@ -55,27 +75,33 @@ test("getText", () => {
   expect(slackPost.getText()).toBe(text)
 })
 
-test("getMentionTargets", () => {
-  var createSlackPostFromBlockElements = (elements: any[]): SlackPost => {
-    const text = "test";
-    const defaultBlocks: any = [
-      {
-        "type": "rich_text",
-        "block_id": "DUMMY",
-        "elements": [
-          {
-            "type": "rich_text_section",
-          }
-        ]
-      }
-    ];
-    let targetBlocks: any = defaultBlocks;
-    targetBlocks[0]["elements"][0]["elements"] = elements;
-    const contents = getContents(text, targetBlocks);
-    const parameter = getParameter(contents);
-    return new SlackPost(parameter);
-  }
+test("hasMention", () => {
+  const noMentionElements = [
+    {
+      "type": "text",
+      "text": "test"
+    }
+  ];
+  expect(createSlackPostFromBlockElements(noMentionElements)
+    .hasMention())
+    .toBe(false);
 
+  const mixElements = [
+    {
+      "type": "text",
+      "text": "1"
+    },
+    {
+      "type": "user",
+      "user_id": "USERID1"
+    }
+  ];
+  expect(createSlackPostFromBlockElements(mixElements)
+    .hasMention())
+    .toBe(true);
+})
+
+test("getMentionTargets", () => {
   const noMentionElements = [
     {
       "type": "text",

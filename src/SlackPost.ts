@@ -22,6 +22,10 @@ export class SlackPost {
 		return contents['event']['text'];
 	}
 
+	hasMention(): boolean {
+		return this.getMentionTargets().length > 0;
+	}
+
 	getMentionTargets(): string[] {
 		const contents = this.getContents();
 		const richTextSection: any[] = contents["event"]["blocks"][0]["elements"][0]["elements"];
