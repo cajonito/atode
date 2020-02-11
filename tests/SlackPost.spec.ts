@@ -1,32 +1,56 @@
-import { SlackPost } from '../src/SlackPost';
+import { SlackPost } from "../src/SlackPost";
 
-const text = 'testtext';
+var getContents = (text: string, blocks: any = null) => {
+  let contents: any = {
+    "event": {
+      "subtype": "bot_message",
+      "text": text,
+    }
+  };
 
-const contents = {
-  'event': {
-    'subtype': 'bot_message',
-    'text': text
+  if (blocks) {
+    contents["event"]["blocks"] = blocks;
   }
-};
-const parameter = {
-  'postData': {
-    'contents': JSON.stringify(contents)
-  }
+
+  return contents;
 }
-let slackPost = new SlackPost(parameter);
 
-test('isBotPost', () => {
+var getParameter = (contents: any) => {
+  return {
+    "postData": {
+      "contents": JSON.stringify(contents)
+    }
+  };
+}
+
+test("isBotPost", () => {
+  const text = "test";
+  const contents = getContents(text);
+  const parameter = getParameter(contents);
+  let slackPost = new SlackPost(parameter);
   expect(slackPost.isBotPost()).toBe(true);
 })
 
-test('getRawJson', () => {
+test("getRawJson", () => {
+  const text = "test";
+  const contents = getContents(text);
+  const parameter = getParameter(contents);
+  let slackPost = new SlackPost(parameter);
   expect(slackPost.getRawJson()).toStrictEqual(parameter);
 })
 
-test('getContents', () => {
+test("getContents", () => {
+  const text = "test";
+  const contents = getContents(text);
+  const parameter = getParameter(contents);
+  let slackPost = new SlackPost(parameter);
   expect(slackPost.getContents()).toStrictEqual(contents);
 })
 
-test('getText', () => {
+test("getText", () => {
+  const text = "test";
+  const contents = getContents(text);
+  const parameter = getParameter(contents);
+  let slackPost = new SlackPost(parameter);
   expect(slackPost.getText()).toBe(text)
 })
