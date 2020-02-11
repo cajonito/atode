@@ -11,9 +11,8 @@ export class SlackBot {
 
 	do() {
 		if (this.slackPost.isBotPost()) return;
+		if (!this.slackPost.hasMention()) return;
 		let contents = this.slackPost.getContents();
-		let text = this.slackPost.getText();
-		this.postText(text);
 		this.postText(JSON.stringify(contents, null, '    '));
 	}
 
