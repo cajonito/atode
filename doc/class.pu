@@ -1,0 +1,34 @@
+@startuml class
+class GAS {
+  + doPost(parameter): void
+  + test(): void
+}
+
+abstract OutputApiFactory {
+  + create(): OutputApi
+}
+
+abstract OutputApi {
+  + send(text: String): void
+}
+
+class SlackApi
+class ConsoleApi
+
+OutputApi <|-- SlackApi
+OutputApi <|-- ConsoleApi
+OutputApiFactory --> OutputApi
+
+
+
+class SlackBot {
+  + constructor(e: object, outputApi: OutputApi): void
+  + do()
+}
+
+class SlackPost {
+}
+
+SlackBot --> SlackPost
+
+@enduml
