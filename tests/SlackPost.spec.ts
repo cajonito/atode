@@ -54,3 +54,86 @@ test("getText", () => {
   let slackPost = new SlackPost(parameter);
   expect(slackPost.getText()).toBe(text)
 })
+
+test("getMentionTargets", () => {
+  var createSlackPostFromBlockElements = (elements: any[]): SlackPost => {
+    const text = "test";
+    const defaultBlocks: any = [
+      {
+        "type": "rich_text",
+        "block_id": "DUMMY",
+        "elements": [
+          {
+            "type": "rich_text_section",
+          }
+        ]
+      }
+    ];
+    let targetBlocks: any = defaultBlocks;
+    targetBlocks[0]["elements"][0]["elements"] = elements;
+    const contents = getContents(text, targetBlocks);
+    const parameter = getParameter(contents);
+    return new SlackPost(parameter);
+  }
+
+  const noMentionElements = [
+    {
+      "type": "text",
+      "text": "test"
+    }
+  ];
+
+  expect(createSlackPostFromBlockElements(noMentionElements)
+    .getMentionTargets())
+    .toStrictEqual([]);
+
+  const multiMentionElements = [
+    {
+      "type": "user",
+      "user_id": "USERID1"
+    },
+    {
+      "type": "user",
+      "user_id": "USERID2"
+    },
+    {
+      "type": "user",
+      "user_id": "USERID1"
+    }
+  ];
+
+  expect(createSlackPostFromBlockElements(multiMentionElements)
+    .getMentionTargets())
+    .toStrictEqual(["USERID1", "USERID2"]);
+
+  const mixElements = [
+    {
+      "type": "text",
+      "text": "1"
+    },
+    {
+      "type": "user",
+      "user_id": "USERID1"
+    },
+    {
+      "type": "user",
+      "user_id": "USERID2"
+    },
+    {
+      "type": "text",
+      "text": "2"
+    },
+    {
+      "type": "user",
+      "user_id": "USERID1"
+    },
+    {
+      "type": "user",
+      "user_id": "USERID3"
+    }
+  ];
+
+  expect(createSlackPostFromBlockElements(mixElements)
+    .getMentionTargets())
+    .toStrictEqual(["USERID1", "USERID2", "USERID3"]);
+})

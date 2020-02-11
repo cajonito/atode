@@ -21,4 +21,15 @@ export class SlackPost {
 		let contents = this.getContents();
 		return contents['event']['text'];
 	}
+
+	getMentionTargets(): string[] {
+		const contents = this.getContents();
+		const richTextSection: any[] = contents["event"]["blocks"][0]["elements"][0]["elements"];
+		const userIdList = richTextSection.filter((v) => {
+			return v["type"] == 'user';
+		}).map((v) => {
+			return v["user_id"];
+		})
+		return Array.from(new Set(userIdList));
+	}
 }
