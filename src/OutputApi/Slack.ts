@@ -2,7 +2,8 @@ import { OutputApi } from '../OutputApi'
 
 export class Slack extends OutputApi {
   send(text: string) {
-    let url = 'https://hooks.slack.com/services/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';
+    let url: string | null = PropertiesService.getScriptProperties().getProperty('SLACK_POST_HOOK_URL');
+    if (url === null) return;
     let options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
       method: 'post',
       contentType: 'application/json',
