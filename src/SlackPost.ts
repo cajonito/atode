@@ -26,7 +26,6 @@ export class SlackPost {
 	}
 
 	getText() {
-		let contents = this.getContents();
 		return contents['event']['text'];
 	}
 
