@@ -19,4 +19,8 @@ export class SlackBot {
 	postText(text: String) {
 		this.outputApi.sendMessage(text);
 	}
+
+	postEphemeral(text: String, userId: String) {
+		this.outputApi.sendEphemeral(text, userId);
+	}
 }

@@ -25,4 +25,30 @@ export class Slack extends OutputApi {
     UrlFetchApp.fetch(url, options);
     return;
   }
+
+  sendEphemeral(text: String, userId: String) {
+    const method = 'post';
+    const url = 'https://slack.com/api/chat.postEphemeral';
+    const contentType = 'application/json; charset=utf-8';
+    const token = PropertiesService.getScriptProperties().getProperty('SLACK_TOKEN');
+    const channel = PropertiesService.getScriptProperties().getProperty('SLACK_CHANNEL_ID');
+
+    if (token == null || channel == null) return;
+
+    const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
+      method: method,
+      contentType: contentType,
+      headers: {
+        "Authorization": "Bearer " + token
+      },
+      payload: JSON.stringify({
+        "token": token,
+        "channel": channel,
+        "text": text,
+        "user": userId,
+      })
+    }
+    UrlFetchApp.fetch(url, options);
+    return;
+  }
 }
