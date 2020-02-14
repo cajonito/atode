@@ -9,8 +9,16 @@ export class SlackPost {
 		return contents['event']['subtype'] == 'bot_message';
 	}
 
+	isInterectiveMessage() {
+		return Object.keys(this.parameter['parameter']).length > 0;
+	}
+
 	getRawJson() {
 		return this.parameter;
+	}
+
+	getPayload() {
+		return JSON.parse(this.parameter['parameter']['payload']);
 	}
 
 	getContents() {
