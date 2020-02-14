@@ -22,7 +22,7 @@ jobs:
       - attach_workspace:
         at: my_workspace
       - run: |
-        cat my_workspace/echo_output
+          cat my_workspace/echo_output
 workflows:
   version: 2
   one_and_two:
