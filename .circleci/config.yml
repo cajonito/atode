@@ -10,9 +10,9 @@ jobs:
       - run: mkdir -p my_workspace
       - run: echo "Trying out workspaces" > my_workspace/echo_output
       - persist_to_workspace:
-        root: my_workspace
-        paths:
-          - echo-output
+          root: my_workspace
+          paths:
+            - echo-output
   two:
     docker:
       - image: circleci/ruby:2.4.1
