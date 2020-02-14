@@ -1,14 +1,53 @@
 import { OutputApi } from '../OutputApi'
 
 export class Slack extends OutputApi {
-  send(text: string) {
-    let url: string | null = PropertiesService.getScriptProperties().getProperty('SLACK_POST_HOOK_URL');
-    if (url === null) return;
-    let options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
-      method: 'post',
-      contentType: 'application/json',
-      payload: JSON.stringify({ text: text })
-    };
+  sendMessage(text: string) {
+    const method = 'post';
+    const url = 'https://slack.com/api/chat.postMessage';
+    const contentType = 'application/json; charset=utf-8';
+    const token = PropertiesService.getScriptProperties().getProperty('SLACK_TOKEN');
+    const channel = PropertiesService.getScriptProperties().getProperty('SLACK_CHANNEL_ID');
+
+    if (token == null || channel == null) return;
+
+    const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
+      method: method,
+      contentType: contentType,
+      headers: {
+        "Authorization": "Bearer " + token
+      },
+      payload: JSON.stringify({
+        "token": token,
+        "channel": channel,
+        "text": text,
+      })
+    }
+    UrlFetchApp.fetch(url, options);
+    return;
+  }
+
+  sendEphemeral(text: String, userId: String) {
+    const method = 'post';
+    const url = 'https://slack.com/api/chat.postEphemeral';
+    const contentType = 'application/json; charset=utf-8';
+    const token = PropertiesService.getScriptProperties().getProperty('SLACK_TOKEN');
+    const channel = PropertiesService.getScriptProperties().getProperty('SLACK_CHANNEL_ID');
+
+    if (token == null || channel == null) return;
+
+    const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
+      method: method,
+      contentType: contentType,
+      headers: {
+        "Authorization": "Bearer " + token
+      },
+      payload: JSON.stringify({
+        "token": token,
+        "channel": channel,
+        "text": text,
+        "user": userId,
+      })
+    }
     UrlFetchApp.fetch(url, options);
     return;
   }
