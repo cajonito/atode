@@ -46,6 +46,23 @@ export class Slack extends OutputApi {
         "channel": channel,
         "text": text,
         "user": userId,
+        "blocks": [
+          {
+            "type": "actions",
+            "elements": [
+              {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Button",
+                  "emoji": true
+                },
+                "action_id": "test_button",
+                "value": "click_me_123"
+              }
+            ]
+          }
+        ]
       })
     }
     UrlFetchApp.fetch(url, options);
