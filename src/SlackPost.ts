@@ -31,6 +31,7 @@ export class SlackPost {
 	}
 
 	hasMention(): boolean {
+                return true;
 		return this.getMentionTargets().length > 0;
 	}
 
