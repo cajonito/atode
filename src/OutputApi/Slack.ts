@@ -6,7 +6,7 @@ export class Slack extends OutputApi {
     const url = 'https://slack.com/api/chat.postMessage';
     const contentType = 'application/json; charset=utf-8';
     const token = PropertiesService.getScriptProperties().getProperty('SLACK_TOKEN');
-    const channel = PropertiesService.getScriptProperties().getProperty('SLACK_CHANNEL_ID');
+    const channel = PropertiesService.getScriptProperties().getProperty('SLACK_DEBUG_CHANNEL_ID');
 
     if (token == null || channel == null) return;
 
