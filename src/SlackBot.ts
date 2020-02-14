@@ -11,8 +11,13 @@ export class SlackBot {
 
 	do() {
 		if (this.slackPost.isBotPost()) return;
-		if (!this.slackPost.hasMention()) return;
 		let contents = this.slackPost.getContents();
+		if (this.slackPost.hasMention()) {
+			let userIds = this.slackPost.getMentionTargets();
+			userIds.forEach((v) => {
+				this.postEphemeral('hi', v);
+			})
+		}
 		this.postText(JSON.stringify(contents, null, '    '));
 	}
 
