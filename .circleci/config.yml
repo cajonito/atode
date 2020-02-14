@@ -20,7 +20,7 @@ jobs:
       - checkout
       - run: echo "A second hello"
       - attach_workspace:
-        at: my_workspace
+          at: my_workspace
       - run: |
           cat my_workspace/echo_output
 workflows:
