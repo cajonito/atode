@@ -10,6 +10,10 @@ export class SlackBot {
 	}
 
 	do() {
+		if (this.slackPost.isInterectiveMessage()) {
+			let payload = this.slackPost.getPayload();
+			this.postText(JSON.stringify(payload, null, '    '));
+		}
 		if (this.slackPost.isBotPost()) return;
 		let contents = this.slackPost.getContents();
 		if (this.slackPost.hasMention()) {
