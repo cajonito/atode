@@ -1,7 +1,7 @@
 import { OutputApi } from '../OutputApi'
 
 export class Console extends OutputApi {
-  send(text: string) {
+  sendMessage(text: string) {
     console.log(text);
   }
 }

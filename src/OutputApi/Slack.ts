@@ -1,7 +1,7 @@
 import { OutputApi } from '../OutputApi'
 
 export class Slack extends OutputApi {
-  send(text: string) {
+  sendMessage(text: string) {
     const method = 'post';
     const url = 'https://slack.com/api/chat.postMessage';
     const contentType = 'application/json; charset=utf-8';
@@ -19,7 +19,7 @@ export class Slack extends OutputApi {
       payload: JSON.stringify({
         "token": token,
         "channel": channel,
-        "text": text
+        "text": text,
       })
     }
     UrlFetchApp.fetch(url, options);

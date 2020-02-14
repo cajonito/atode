@@ -17,6 +17,6 @@ export class SlackBot {
 	}
 
 	postText(text: String) {
-		this.outputApi.send(text);
+		this.outputApi.sendMessage(text);
 	}
 }

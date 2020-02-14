@@ -1,3 +1,3 @@
 export abstract class OutputApi {
-  abstract send(text: String): void;
+  abstract sendMessage(text: String): void;
 }
