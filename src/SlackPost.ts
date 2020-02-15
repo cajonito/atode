@@ -44,4 +44,14 @@ export class SlackPost {
 		})
 		return Array.from(new Set(userIdList));
 	}
+
+	getValueSafely(path: string): any {
+		let lookup: any = Object.assign({}, this.parameter);
+		const keys: string[] = path.split('.');
+		for (let i = 0; i < keys.length; i++) {
+			if (!(keys[i] in lookup)) return undefined;
+			lookup = lookup[keys[i]];
+		}
+		return lookup;
+	}
 }
