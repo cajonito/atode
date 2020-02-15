@@ -1,33 +1,41 @@
 export class SlackPost {
-	parameter: any;
-	constructor(parameter: any) {
+	parameter: { [key: string]: any };
+	constructor(parameter: { [key: string]: any }) {
 		this.parameter = parameter;
 	}
 
-	isBotPost() {
+	isBotPost(): boolean {
 		let contents = this.getContents();
-		return contents['event']['subtype'] == 'bot_message';
+		return this.getValueSafelyFromObject('event.subtype', contents) == 'bot_message';
 	}
 
-	isInterectiveMessage() {
-		return Object.keys(this.parameter['parameter']).length > 0;
+	isInterectiveMessage(): boolean {
+		return Object.keys(this.getValueSafelyFromObject('parameter', this.parameter)).length > 0;
 	}
 
-	getRawJson() {
+	getRawJson(): { [key: string]: any } {
 		return this.parameter;
 	}
 
-	getPayload() {
-		return JSON.parse(this.parameter['parameter']['payload']);
+	getPayload(): { [key: string]: any } {
+		try {
+			return JSON.parse(this.getValueSafelyFromObject('parameter.payload', this.parameter));
+		} catch {
+			return {}
+		}
 	}
 
-	getContents() {
-		return JSON.parse(this.parameter['postData']['contents']);
+	getContents(): { [key: string]: any } {
+		try {
+			return JSON.parse(this.getValueSafelyFromObject('postData.contents', this.parameter));
+		} catch {
+			return {}
+		}
 	}
 
-	getText() {
+	getText(): string {
 		let contents = this.getContents();
-		return contents['event']['text'];
+		return this.getValueSafelyFromObject('event.text', contents);
 	}
 
 	hasMention(): boolean {
@@ -36,11 +44,11 @@ export class SlackPost {
 
 	getMentionTargets(): string[] {
 		const contents = this.getContents();
-		const richTextSection: any[] = contents["event"]["blocks"][0]["elements"][0]["elements"];
+		const richTextSection: any[] = this.getValueSafelyFromObject('event.blocks.0.elements.0.elements', contents)
 		const userIdList = richTextSection.filter((v) => {
-			return v["type"] == 'user';
+			return v.type == 'user';
 		}).map((v) => {
-			return v["user_id"];
+			return v.user_id;
 		})
 		return Array.from(new Set(userIdList));
 	}
