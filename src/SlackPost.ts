@@ -1,3 +1,5 @@
+import { Json } from './Json'
+
 export class SlackPost {
 	parameter: { [key: string]: any };
 	constructor(parameter: { [key: string]: any }) {
@@ -6,11 +8,11 @@ export class SlackPost {
 
 	isBotPost(): boolean {
 		let contents = this.getContents();
-		return this.getValueSafelyFromObject('event.subtype', contents) == 'bot_message';
+		return new Json(contents).get('event.subtype') == 'bot_message';
 	}
 
 	isInterectiveMessage(): boolean {
-		return Object.keys(this.getValueSafelyFromObject('parameter', this.parameter)).length > 0;
+		return Object.keys(new Json(this.parameter).get('parameter')).length > 0;
 	}
 
 	getRawJson(): { [key: string]: any } {
@@ -19,7 +21,7 @@ export class SlackPost {
 
 	getPayload(): { [key: string]: any } {
 		try {
-			return JSON.parse(this.getValueSafelyFromObject('parameter.payload', this.parameter));
+			return JSON.parse(new Json(this.parameter).get('parameter.payload'));
 		} catch {
 			return {}
 		}
@@ -27,7 +29,7 @@ export class SlackPost {
 
 	getContents(): { [key: string]: any } {
 		try {
-			return JSON.parse(this.getValueSafelyFromObject('postData.contents', this.parameter));
+			return JSON.parse(new Json(this.parameter).get('postData.contents'));
 		} catch {
 			return {}
 		}
@@ -35,7 +37,7 @@ export class SlackPost {
 
 	getText(): string {
 		let contents = this.getContents();
-		return this.getValueSafelyFromObject('event.text', contents);
+		return new Json(contents).get('event.text');
 	}
 
 	hasMention(): boolean {
@@ -44,7 +46,8 @@ export class SlackPost {
 
 	getMentionTargets(): string[] {
 		const contents = this.getContents();
-		const richTextSection: any[] = this.getValueSafelyFromObject('event.blocks.0.elements.0.elements', contents)
+		const richTextSection: any[] | undefined = new Json(contents).get('event.blocks.0.elements.0.elements');
+		if (!richTextSection) return []
 		const userIdList = richTextSection.filter((v) => {
 			return v.type == 'user';
 		}).map((v) => {
