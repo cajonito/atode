@@ -163,32 +163,3 @@ test("getMentionTargets", () => {
     .getMentionTargets())
     .toStrictEqual(["USERID1", "USERID2", "USERID3"]);
 })
-
-test('getValueSafely', () => {
-  let slackPost = new SlackPost({});
-  const object: { [key: string]: any } = {
-    'a': 'A',
-    'b': {
-      'c': 'C',
-      'd': [
-        {
-          'e': 'E',
-          'f': 'f'
-        },
-        {
-          'g': 'G',
-          'h': [
-            'i',
-            'j',
-            ['k', 'l', 'm']
-          ]
-        }
-      ]
-    }
-  }
-  expect(slackPost.getValueSafelyFromObject('b.d.1.h.2.1', object)).toBe('l');
-  expect(slackPost.getValueSafelyFromObject('c', object)).toBe(undefined);
-  expect(slackPost.getValueSafelyFromObject('b.d.100.h.2.1', object)).toBe(undefined);
-  expect(slackPost.getValueSafelyFromObject('.....', object)).toBe(undefined);
-  expect(slackPost.getValueSafelyFromObject('some_key', {})).toBe(undefined);
-});

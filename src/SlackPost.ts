@@ -55,14 +55,4 @@ export class SlackPost {
 		})
 		return Array.from(new Set(userIdList));
 	}
-
-	getValueSafelyFromObject(path: string, object: { [key: string]: any }): any {
-		let lookup: any = Object.assign({}, object);
-		const keys: string[] = path.split('.');
-		for (let i = 0; i < keys.length; i++) {
-			if (!(keys[i] in lookup)) return undefined;
-			lookup = lookup[keys[i]];
-		}
-		return lookup;
-	}
 }
