@@ -7,7 +7,7 @@ global.doPost = function (e: any) {
 	const outputApiFactory = new OutputApiFactory();
 	const outputApiSlack = outputApiFactory.create('slack');
 	const slackBot = new SlackBot(outputApiSlack, e);
-	slackBot.do();
+	slackBot.run();
 };
 
 var postByIncomingHook = (text: string) => {

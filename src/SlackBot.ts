@@ -9,7 +9,7 @@ export class SlackBot {
 		this.slackPost = new SlackPost(parameter);
 	}
 
-	do() {
+	run() {
 		if (this.slackPost.isInterectiveMessage()) {
 			let payload = this.slackPost.getPayload();
 			this.postText(JSON.stringify(payload, null, '    '));

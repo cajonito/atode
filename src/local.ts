@@ -6,7 +6,7 @@ var main = () => {
   const outputApiConsole = outputApiFactory.create('consle');
   const e = getTestData();
   const slackBot = new SlackBot(outputApiConsole, e);
-  slackBot.do();
+  slackBot.run();
 };
 
 var getTestData = () => {
