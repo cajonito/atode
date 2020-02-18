@@ -8,7 +8,7 @@ services:
       - .:/workdir
       - /workdir/node_modules
     working_dir: /workdir
-    command: tail -f /dev/null
+    entrypoint: ./entrypoint.sh
   clasp:
     build:
       context: .
@@ -17,4 +17,4 @@ services:
       - ./.clasprc.json:/root/.clasprc.json
       - .:/workdir
     working_dir: /workdir
-    command: tail -f /dev/null
+    entrypoint: ./entrypoint.sh
