@@ -13,7 +13,7 @@ module.exports = {
     }
   },
   "testMatch": [
-    "**/tests/*.spec.+(ts|tsx|js)"
+    "**/tests/**/*.spec.+(ts|tsx|js)"
   ],
   "collectCoverageFrom": [
     "src/**/*.{ts, tsx}"
