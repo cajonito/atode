@@ -1,8 +1,7 @@
 import { Json } from '../Json'
 import { Action } from '../Action'
 
-export class SetAtode implements Action {
-  isMatched: boolean = false;
+export class SetAtode extends Action {
   payload: Json = new Json({});
   match(parameter: Json): boolean {
     if (!parameter.get('parameter.payload')) return false;

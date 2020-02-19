@@ -1,14 +1,14 @@
 import { Mention } from '../../src/Action/Mention';
 import { Json } from '../../src/Json';
+import { Console } from '../../src/OutputApi/Console'
 
-const mention = new Mention();
+const mention = new Mention(new Console);
 
 test('match', () => {
   expect(mention.match(new Json({
     'postData': {
       'contents': JSON.stringify({
         'event': {
-          'subtype': 'bot_message',
           'blocks': [{
             'elements': [{
               'elements': [

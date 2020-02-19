@@ -1,28 +1,33 @@
 import { SlackPost } from './SlackPost';
 import { OutputApi } from './OutputApi';
+import { Mention } from './Action/Mention';
+import { SetAtode } from './Action/SetAtode';
+import { Json } from './Json';
 
 export class SlackBot {
 	outputApi: OutputApi;
-	slackPost: SlackPost;
-	constructor(outputApi: OutputApi, parameter: object) {
+	parameter: Json;
+	constructor(outputApi: OutputApi, parameter: Json) {
 		this.outputApi = outputApi;
-		this.slackPost = new SlackPost(parameter);
+		this.parameter = parameter;
 	}
 
 	run() {
-		if (this.slackPost.isInterectiveMessage()) {
-			let payload = this.slackPost.getPayload();
-			this.postText(JSON.stringify(payload, null, '    '));
-		}
-		if (this.slackPost.isBotPost()) return;
-		let contents = this.slackPost.getContents();
-		if (this.slackPost.hasMention()) {
-			let userIds = this.slackPost.getMentionTargets();
-			userIds.forEach((v) => {
-				this.postEphemeral('hi', v);
-			})
-		}
-		this.postText(JSON.stringify(contents, null, '    '));
+		const actions = [
+			new Mention(this.outputApi),
+			new SetAtode(this.outputApi)
+		]
+
+		actions.forEach((v) => {
+			if (v.match(this.parameter)) {
+				v.do();
+			}
+		})
+
+		// this.postText(JSON.stringify(this.parameter.object, null, '    '));
+		// const contents = JSON.parse(this.parameter.get('postData.contents'));
+		// this.postText(JSON.stringify(contents, null, '    '));
+
 	}
 
 	postText(text: String) {

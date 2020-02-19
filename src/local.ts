@@ -1,11 +1,12 @@
 import { SlackBot } from './SlackBot';
 import { OutputApiFactory } from './OutputApiFactory';
+import { Json } from './Json';
 
 var main = () => {
   const outputApiFactory = new OutputApiFactory();
   const outputApiConsole = outputApiFactory.create('consle');
   const e = getTestData();
-  const slackBot = new SlackBot(outputApiConsole, e);
+  const slackBot = new SlackBot(outputApiConsole, new Json(e));
   slackBot.run();
 };
 

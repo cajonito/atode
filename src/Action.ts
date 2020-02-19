@@ -1,7 +1,14 @@
 import { Json } from './Json'
+import { OutputApi } from './OutputApi';
 
-export interface Action {
+export abstract class Action {
+  outputApi: OutputApi;
   isMatched: boolean;
-  match(parameter: Json): boolean;
-  do(): void;
+
+  constructor(outputApi: OutputApi) {
+    this.outputApi = outputApi;
+    this.isMatched = false
+  }
+  abstract match(parameter: Json): boolean;
+  abstract do(): void;
 }
