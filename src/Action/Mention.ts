@@ -8,7 +8,7 @@ export class Mention extends Action {
     if (!parameter.get('postData.contents')) return false;
     const contents = new Json(JSON.parse(parameter.get('postData.contents')));
     if (contents.get('event.subtype') == 'bot_message') return false;
-    if (contents.get('event.bot_id')) return false;
+    if (contents.get('event.channel') != this.config.channelId) return false;
 
     const richTextSection: any[] | undefined = contents.get('event.blocks.0.elements.0.elements');
     if (!richTextSection) return false

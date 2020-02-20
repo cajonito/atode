@@ -3,19 +3,22 @@ import { OutputApi } from './OutputApi';
 import { Mention } from './Action/Mention';
 import { SetAtode } from './Action/SetAtode';
 import { Json } from './Json';
+import { Config } from './Config';
 
 export class SlackBot {
-	outputApi: OutputApi;
 	parameter: Json;
-	constructor(outputApi: OutputApi, parameter: Json) {
-		this.outputApi = outputApi;
+	outputApi: OutputApi;
+	config: Config;
+	constructor(parameter: Json, outputApi: OutputApi, config: Config) {
 		this.parameter = parameter;
+		this.outputApi = outputApi;
+		this.config = config;
 	}
 
 	run() {
 		const actions = [
-			new Mention(this.outputApi),
-			new SetAtode(this.outputApi)
+			new Mention(this.outputApi, this.config),
+			new SetAtode(this.outputApi, this.config)
 		]
 
 		actions.forEach((v) => {

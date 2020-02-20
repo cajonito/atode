@@ -30,7 +30,7 @@
         ]
       }
     ],
-    "channel": "CMP01787L",
+    "channel": "channel_id",
     "event_ts": "1580892546.129300",
     "channel_type": "channel"
   },

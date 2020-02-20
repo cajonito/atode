@@ -1,13 +1,20 @@
 import { SlackBot } from './SlackBot';
 import { OutputApiFactory } from './OutputApiFactory';
 import { Json } from './Json';
+import { Config } from './Config'
 
 declare var global: any;
 
 global.doPost = function (e: any) {
+	const config: Config = {
+		'channelId': PropertiesService.getScriptProperties().getProperty('SLACK_CHANNEL_ID'),
+		'debugChannelId': PropertiesService.getScriptProperties().getProperty('SLACK_DEBUG_CHANNEL_ID'),
+		'token': PropertiesService.getScriptProperties().getProperty('SLACK_TOKEN'),
+	}
+
 	const outputApiFactory = new OutputApiFactory();
-	const outputApiSlack = outputApiFactory.create('slack');
-	const slackBot = new SlackBot(outputApiSlack, new Json(e));
+	const outputApi = outputApiFactory.create('slack');
+	const slackBot = new SlackBot(new Json(e), outputApi, config);
 	slackBot.run();
 };
 
