@@ -1,33 +1,43 @@
+import { Json } from './Json'
+
 export class SlackPost {
-	parameter: any;
-	constructor(parameter: any) {
+	parameter: { [key: string]: any };
+	constructor(parameter: { [key: string]: any }) {
 		this.parameter = parameter;
 	}
 
-	isBotPost() {
+	isBotPost(): boolean {
 		let contents = this.getContents();
-		return contents['event']['subtype'] == 'bot_message';
+		return new Json(contents).get('event.subtype') == 'bot_message';
 	}
 
-	isInterectiveMessage() {
-		return Object.keys(this.parameter['parameter']).length > 0;
+	isInterectiveMessage(): boolean {
+		return Object.keys(new Json(this.parameter).get('parameter')).length > 0;
 	}
 
-	getRawJson() {
+	getRawJson(): { [key: string]: any } {
 		return this.parameter;
 	}
 
-	getPayload() {
-		return JSON.parse(this.parameter['parameter']['payload']);
+	getPayload(): { [key: string]: any } {
+		try {
+			return JSON.parse(new Json(this.parameter).get('parameter.payload'));
+		} catch {
+			return {}
+		}
 	}
 
-	getContents() {
-		return JSON.parse(this.parameter['postData']['contents']);
+	getContents(): { [key: string]: any } {
+		try {
+			return JSON.parse(new Json(this.parameter).get('postData.contents'));
+		} catch {
+			return {}
+		}
 	}
 
-	getText() {
+	getText(): string {
 		let contents = this.getContents();
-		return contents['event']['text'];
+		return new Json(contents).get('event.text');
 	}
 
 	hasMention(): boolean {
@@ -36,11 +46,12 @@ export class SlackPost {
 
 	getMentionTargets(): string[] {
 		const contents = this.getContents();
-		const richTextSection: any[] = contents["event"]["blocks"][0]["elements"][0]["elements"];
+		const richTextSection: any[] | undefined = new Json(contents).get('event.blocks.0.elements.0.elements');
+		if (!richTextSection) return []
 		const userIdList = richTextSection.filter((v) => {
-			return v["type"] == 'user';
+			return v.type == 'user';
 		}).map((v) => {
-			return v["user_id"];
+			return v.user_id;
 		})
 		return Array.from(new Set(userIdList));
 	}

@@ -1,12 +1,20 @@
 import { SlackBot } from './SlackBot';
 import { OutputApiFactory } from './OutputApiFactory';
+import { Json } from './Json';
+import { Config } from './Config'
 
 var main = () => {
+  const config: Config = {
+    'channelId': 'channel_id',
+    'debugChannelId': 'debug_channel_id',
+    'token': 'token'
+  }
+
   const outputApiFactory = new OutputApiFactory();
   const outputApiConsole = outputApiFactory.create('consle');
   const e = getTestData();
-  const slackBot = new SlackBot(outputApiConsole, e);
-  slackBot.do();
+  const slackBot = new SlackBot(new Json(e), outputApiConsole, config);
+  slackBot.run();
 };
 
 var getTestData = () => {

@@ -4,7 +4,7 @@ class GAS {
   + test(): void
 }
 
-abstract OutputApiFactory {
+class OutputApiFactory {
   + create(): OutputApi
 }
 
@@ -12,23 +12,43 @@ abstract OutputApi {
   + send(text: String): void
 }
 
-class SlackApi
-class ConsoleApi
+class Slack
+class Console
 
-OutputApi <|-- SlackApi
-OutputApi <|-- ConsoleApi
+OutputApi <|-- Slack
+OutputApi <|-- Console
 OutputApiFactory --> OutputApi
 
-
-
 class SlackBot {
-  + constructor(e: object, outputApi: OutputApi): void
+  + run()
+}
+class ActionFactory
+abstract Action {
   + do()
 }
+class Mention
+class SetAtode
 
-class SlackPost {
+ActionFactory --> Action
+Action <|-- Mention
+Action <|-- SetAtode
+
+class SlackMessage {
+  - payload: Payload
 }
 
-SlackBot --> SlackPost
+class Payload {
+  + get()
+}
+
+class Json {
+  + get()
+}
+
+SlackMessage "1"--"1" Payload
+Payload "1"--"1" Json
+
+
+SlackBot --> SlackMessage
 
 @enduml
