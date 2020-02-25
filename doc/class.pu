@@ -22,33 +22,31 @@ OutputApiFactory --> OutputApi
 class SlackBot {
   + run()
 }
+
+GAS --> SlackBot
+GAS --> OutputApiFactory
+SlackBot --> OutputApi
+
 class ActionFactory
 abstract Action {
+  + match()
   + do()
 }
-class Mention
-class SetAtode
+class Start
+class Focus
+class ShortBreak
+class LongBreak
+class Stop
 
 ActionFactory --> Action
-Action <|-- Mention
-Action <|-- SetAtode
-
-class SlackMessage {
-  - payload: Payload
-}
-
-class Payload {
-  + get()
-}
+Action <|-- Start
+Action <|-- Focus
+Action <|-- ShortBreak
+Action <|-- LongBreak
+Action <|-- Stop
 
 class Json {
   + get()
 }
-
-SlackMessage "1"--"1" Payload
-Payload "1"--"1" Json
-
-
-SlackBot --> SlackMessage
 
 @enduml
